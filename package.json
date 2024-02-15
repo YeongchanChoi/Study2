@@ -1,0 +1,9 @@
+{
+  "name": "Study2",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "https://github.com/YeongchanChoi/Study2.git",
+  "author": "Audora <gy2553@naver.com>",
+  "license": "MIT",
+  "type": "module"
+}
