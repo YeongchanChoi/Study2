@@ -2,9 +2,7 @@
 import express from "express"; // 요즘 방식
 const app = express();
 
-app.get("/", function (req, res) {
+app.get("/qqq", function (req, res) {
   res.send("Hello World");
 });
-
 app.listen(3000);
-aa;
