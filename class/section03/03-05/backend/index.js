@@ -5,11 +5,13 @@ import { createTokenOfPhone } from "./phone.js";
 import swaggerUi from "swagger-ui-express";
 import swaggerJsdoc from "swagger-jsdoc";
 import { options } from "./swagger/config.js";
+import cors from "cors";
 
 const swaggerSpec = swaggerJsdoc(options);
 
 const app = express();
 app.use(express.json());
+app.use(cors());
 app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 app.get("/board", function (req, res) {
   //1. DB 접속 > 데이터 조회
