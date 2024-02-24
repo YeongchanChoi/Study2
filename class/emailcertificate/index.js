@@ -1,42 +1,33 @@
 import express from "express";
-import { createToken } from "./createToken.js";
-
-import swaggerUi from "swagger-ui-express";
-import swaggerJsdoc from "swagger-jsdoc";
-import { options } from "./swagger/config.js";
+import axios from "axios";
+import {
+  checkEmail,
+  getWelcomeTemplate,
+  sendTemplateToEmail,
+} from "./email.js";
 import cors from "cors";
-
-const swaggerSpec = swaggerJsdoc(options);
-
 const app = express();
 app.use(express.json());
 app.use(cors());
-app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
-app.get("/board", function (req, res) {
-  //1. DB 접속 > 데이터 조회
-  const result = [
-    { number: 1, writer: "A", title: "title", content: "content" },
-    { number: 2, writer: "B", title: "title", content: "content" },
-    { number: 2, writer: "C", title: "title", content: "content" },
-  ];
-  //2. DB 결과 브라우저 응답
-
-  res.send(result);
+app.get("/test", function (req, res) {
+  res.send("connected");
 });
-app.post("/board", function (req, res) {
-  //1. 브라우저에서 보내준 데이터 확인
-  console.log(req);
-  console.log("==================");
-  console.log(req.body);
+app.post("/email", (req, res) => {
+  const { name, email } = req.body;
 
-  //2. DB 접속 후, 데이터 저장
+  // 1. 이메일이 정상인지 확인(1-존재여부, 2-"@"포함여부)
+  const isValid = checkEmail(email);
+  if (isValid === false) return;
 
-  //3. DB에 결과를 응답으로 주기
-  res.send("게시물 등록 완료");
+  // 2. 인증 템플릿 만들기
+  const mytemplate = getWelcomeTemplate(name);
+
+  // 3. 이메일에 인증 템플릿 전송하기
+  sendTemplateToEmail(email, mytemplate);
+  res.send("전송완료");
 });
-app.post("/token", function (req, res) {
-  const phone = req.body.phone;
-  createTokenOfPhone(phone);
-  res.send("전송 완료");
+app.post("/temp", (req, res) => {
+  const { certnum } = req.body;
 });
+
 app.listen(3000);
