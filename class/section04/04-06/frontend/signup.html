@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script>
+      function zzz() {
+        const myphone = document.getElementById("myphone").value;
+        console.log(myphone);
+        axios
+          .post("http://localhost:3000/token", {
+            phone: myphone,
+          })
+          .then((res) => {
+            console.log(res.data);
+            document.getElementById("result").innerText = res.data;
+          });
+      }
+    </script>
+    <title>Signup</title>
+  </head>
+  <body>
+    aaa Phone: <input id="myphone" type="text" /><button onclick="zzz()">
+      certify
+    </button>
+    <div id="result">status</div>
+    <button>register</button>
+  </body>
+</html>
